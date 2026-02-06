@@ -4,14 +4,27 @@
  */
 package br.kge.eti.OSApiAaplication.domain.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 /**
  *
  * @author Aluno
  */
+ @Entity
+ 
 public class Cliente {
-    private long id;
+ 
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id; 
     private String nome;
     private String email;
+    
+    @Column (name="telefone")
     private String fone;
 
     public Cliente() {
@@ -77,7 +90,5 @@ public class Cliente {
         final Cliente other = (Cliente) obj;
         return this.id == other.id;
     }
+    }
     
-    
-    
-}
