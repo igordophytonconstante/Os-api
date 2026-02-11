@@ -5,9 +5,9 @@
 package br.kge.eti.OSApiAaplication.controller;
 
 import br.kge.eti.OSApiAaplication.domain.model.Cliente;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import br.kge.eti.OSApiAaplication.domain.repository.ClienteRepository;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,21 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Aluno
  */
-@RestController 
+@RestController
 public class ClienteController {
     
-    @PersistenceContext
-    private EntityManager manager;
+    @Autowired
+    private ClienteRepository ClienteRepository;
     
-    @GetMapping("/clientes)")
-    public List<Cliente> listas() {
+    @GetMapping("/clientes")
+    public List<Cliente> listas(){
         
-        return manager.createQuery("from Cliente", Cliente.class)
-                .getResultList();
-        
-        
+        return ClienteRepository.findByNome("KGe");
+          
     }
 }
+
+        
+      
+        
+        
+
         
         
         
