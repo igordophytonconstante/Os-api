@@ -4,25 +4,109 @@
  */
 package br.kge.eti.OSApiAaplication.domain.model;
 
+import jakarta.annotation.Generated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 /**
  *
  * @author sesi3dia
  */
-@RestController
+@Entity
 public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+ 
     
-    @PersistenceContext
-            private EntityManager manager;
     
-    @GetMapping("/clientes")
-    public List<Cliente> listas() {
-        
-        return manager.createQuery("from Cliente", Cliente.class).getResultList();
+    @NotBlank
+    @Size(max = 20)
+    private String nome;
+    
+    @NotBlank
+    @Email
+    @Size(max = 255)
+    private String email;
+    
+    @NotBlank
+    @Size(max = 20)
+    @Column(name = "telefone")
+    private String fone;
+
+
+
+    public Cliente() {
     }
+
+    public Cliente(long id, String nome, String email, String fone) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.fone = fone;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFone() {
+        return fone;
+    }
+
+    public void setFone(String fone) {
+        this.fone = fone;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cliente other = (Cliente) obj;
+        return this.id == other.id;
+    }
+
 }
