@@ -4,6 +4,7 @@
  */
 package br.kge.eti.OSApiAaplication.controller;
 
+import br.kge.eti.OSApiAaplication.domain.Service.ClienteService;
 import br.kge.eti.OSApiAaplication.domain.model.Cliente;
 import br.kge.eti.OSApiAaplication.domain.repository.ClienteRepository;
 import jakarta.validation.Valid;
@@ -31,6 +32,9 @@ public class ClienteController {
     @Autowired
     private ClienteRepository ClienteRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
     @GetMapping("/clientes")
     public List<Cliente> listas() {
         return ClienteRepository.findAll();
@@ -54,27 +58,30 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
 
-        return ClienteRepository.save(cliente);
+        return clienteService.salvar(cliente);
+
     }
-       @PutMapping("/clientes/{clienteID}")
-        public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteID,
-                                                 @RequestBody Cliente cliente){
-        
+
+    @PutMapping("/clientes/{clienteID}")
+    public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteID,
+            @RequestBody Cliente cliente) {
+
         if (!ClienteRepository.existsById(clienteID)) {
             return ResponseEntity.notFound().build();
-            
+
         }
         cliente.setId(clienteID);
-        cliente = ClienteRepository.save(cliente);
+        cliente = clienteService.salvar(cliente);
         return ResponseEntity.ok(cliente);
     }
+
     @DeleteMapping("/clientes/{clienteID}")
     public ResponseEntity<Void> excluir(@PathVariable Long clienteID) {
-         
-       if (!ClienteRepository.existsById(clienteID)) {
-            return ResponseEntity.notFound().build();
-    }
-        ClienteRepository.deleteById(clienteID);
-        return ResponseEntity.noContent().build();
-    }}
 
+        if (!ClienteRepository.existsById(clienteID)) {
+            return ResponseEntity.notFound().build();
+        }
+        clienteService.excluir(clienteID);
+        return ResponseEntity.noContent().build();
+    }
+}
