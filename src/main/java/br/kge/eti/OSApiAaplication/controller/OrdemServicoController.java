@@ -8,6 +8,11 @@ import br.kge.eti.OSApiAaplication.domain.Service.OrdemServicoService;
 import br.kge.eti.OSApiAaplication.domain.model.AtualizaStatusDTO;
 import br.kge.eti.OSApiAaplication.domain.model.OrdemServico;
 import br.kge.eti.OSApiAaplication.domain.repository.OrdemServicoRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -33,22 +38,34 @@ public class OrdemServicoController {
     private OrdemServicoService ordemServicoService;
     
     
+    
+    
 
     @GetMapping("/ordem-servico")
     public List<OrdemServico> listas() {
         return ordemServicoRepository.findAll();
     }
+    
 
 
-    @GetMapping("/ordem-servico/{ordem_servicoID}")
-    public ResponseEntity<OrdemServico> buscar(@PathVariable Long ordem_servicoID) {
-        Optional<OrdemServico> os = ordemServicoRepository.findById(ordem_servicoID);
-        if (os.isPresent()) {
-            return ResponseEntity.ok(os.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+@Operation(summary = "Busca uma ordem de serviço por ID", description = "Retorna os detalhes de uma ordem de serviço específica baseada no ID fornecido")
+@ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Ordem de serviço encontrada com sucesso"),
+    @ApiResponse(responseCode = "404", description = "Ordem de serviço não encontrada")
+})
+@GetMapping("/ordem-servico/{ordem_servicoID}")
+public ResponseEntity<OrdemServico> buscar(
+    
+        @Parameter(name = "ordem_servicoID", description = "ID da ordem de serviço", example = "1") 
+        @PathVariable Long ordem_servicoID) {
+    
+    Optional<OrdemServico> os = ordemServicoRepository.findById(ordem_servicoID);
+    if (os.isPresent()) {
+        return ResponseEntity.ok(os.get());
+    } else {
+        return ResponseEntity.notFound().build();
     }
+}
 
 
 

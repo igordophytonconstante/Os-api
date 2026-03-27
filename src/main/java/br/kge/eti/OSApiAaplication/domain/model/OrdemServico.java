@@ -4,6 +4,7 @@
  */
 package br.kge.eti.OSApiAaplication.domain.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,11 +25,12 @@ public class OrdemServico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @Schema(name = "ID da ordem e serviço", example = "1", required = true)
     @ManyToOne
     private Cliente cliente;
-    
+    @Schema(name = "Descrção da ordem e serviço", example = "Notebook - não liga a tela", required = false)
     private String descricao;
+    @Schema(name = "Valor do serviço", example = "100.00", required = false)
     private BigDecimal preco;
     
     @Enumerated(EnumType.STRING)
@@ -122,6 +124,7 @@ public class OrdemServico {
         }
         final OrdemServico other = (OrdemServico) obj;
         return Objects.equals(this.id, other.id);
+        
         
     }
     
